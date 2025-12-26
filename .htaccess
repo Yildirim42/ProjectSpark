@@ -1,0 +1,15 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+# Video ve Resim formatlarını sunucuya tanıt
+AddType video/mp4 .mp4
+AddType video/mp4 .m4v
+AddType video/quicktime .mov
+AddType video/x-msvideo .avi
+
+# Uploads klasörüne erişim garantisi (Önceki kodların altına ekle)
+<IfModule mod_rewrite.c>
+    # Eğer istek uploads klasörüne ise engelleme, direkt ver
+    RewriteRule ^uploads/ - [L]
+</IfModule>
