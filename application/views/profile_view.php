@@ -70,10 +70,6 @@
                             </form>
                         <?php endif; ?>
                     </div>
-
-                    <?php if ($is_mine): ?>
-                        
-                    <?php endif; ?>
                 </div>
 
                 <div>
@@ -87,6 +83,15 @@
                             <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.74-5.24z" clip-rule="evenodd" />
                         </svg>
                         <?= $this->session->flashdata('success'); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if($this->session->flashdata('error')): ?>
+                    <div class="mt-4 bg-red-50 text-red-600 text-xs p-3 rounded-xl border border-red-100 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-red-500">
+                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+                        </svg>
+                        <?= $this->session->flashdata('error'); ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -113,7 +118,23 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
                                     <h6 class="font-bold text-slate-900"><?= $post->full_name; ?></h6>
-                                    <span class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full"><?= date('d M H:i', strtotime($post->created_at)); ?></span>
+                                    
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full">
+                                            <?= date('d M H:i', strtotime($post->created_at)); ?>
+                                        </span>
+
+                                        <?php if ($is_mine): ?>
+                                            <a href="<?= site_url('profile/delete_post/' . $post->id); ?>" 
+                                               onclick="return confirm('Bu gönderiyi silmek istediğinizden emin misiniz?')"
+                                               class="p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                               title="Gönderiyi Sil">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                </svg>
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                                 <p class="text-slate-700 mt-2 text-sm leading-relaxed"><?= $post->content; ?></p>
                             </div>

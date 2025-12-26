@@ -10,7 +10,9 @@ class Post_model extends CI_Model
         $this->db->order_by('posts.created_at', 'DESC');
         return $this->db->get()->result();
     }
-
+    public function get_post_by_id($post_id) {
+        return $this->db->where('id', $post_id)->get('posts')->row();
+    }
     public function insert_post($data)
     {
         return $this->db->insert('posts', $data);
@@ -25,5 +27,10 @@ class Post_model extends CI_Model
         $this->db->where('posts.user_id', $user_id); // Filtreleme burada yapılıyor
         $this->db->order_by('posts.created_at', 'DESC');
         return $this->db->get()->result();
+    }
+    public function delete_post($post_id)
+    {
+        $this->db->where('id', $post_id);
+        return $this->db->delete('posts');
     }
 }

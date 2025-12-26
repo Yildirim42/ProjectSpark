@@ -92,4 +92,34 @@ class Profile extends CI_Controller
 
         redirect('profile');
     }
+    public function delete_post($post_id)
+    {
+
+        $user_id = $this->session->userdata('user_id');
+        $post = $this->Post_model->get_post_by_id($post_id);
+
+        if ($post && $post->user_id == $user_id) {
+            
+            if (!empty($post->media_path)) {
+                $media_file_path = FCPATH . 'uploads/posts/' . $post->media_path;
+                
+                if (file_exists($media_file_path)) {
+                    unlink($media_file_path);
+                }
+            }
+
+            $result = $this->Post_model->delete_post($post_id);
+
+            if ($result) {
+                $this->session->set_flashdata('success', 'Gönderi ve medya dosyası başarıyla silindi.');
+            } else {
+                $this->session->set_flashdata('error', 'Veritabanından silinirken bir hata oluştu.');
+            }
+
+        } else {
+            $this->session->set_flashdata('error', 'Gönderi bulunamadı veya bu işlem için yetkiniz yok.');
+        }
+
+        redirect('profile');
+    }
 }
